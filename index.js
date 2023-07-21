@@ -34,7 +34,7 @@ app.get('/api/:date?', (req, res) => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   let date = new Date(req.params.date);
-  let formattedDate = `${daysOfWeek[date.getUTCDay()]} ,${date.getDate() +1} ${months[date.getUTCMonth()]} ${date.getFullYear()} ${date.getUTCHours().toString().padStart(2, '0')}:${date.getUTCMinutes().toString().padStart(2, '0')}:${date.getUTCSeconds().toString().padStart(2, '0')}`
+  let formattedDate = `${daysOfWeek[date.getUTCDay()]} ,${date.getUTCDate()} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()} ${date.getUTCHours().toString().padStart(2, '0')}:${date.getUTCMinutes().toString().padStart(2, '0')}:${date.getUTCSeconds().toString().padStart(2, '0')}`
   res.json({
     unix: date.getTime(),
     utc: formattedDate
