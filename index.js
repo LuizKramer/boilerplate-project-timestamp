@@ -28,35 +28,38 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api/:date?', (req, res) => {
-  const months = [
-    "Jan", "Feb", "Mar","Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  ]
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let date_string = req.params.date;
   let date;
-
-  if(!req.params.date){
+  if (!req.params.date) {
     date = new Date();
   }
-  else{
-    date = new Date(req.params.date);
+  else {
+    date = new Date((date_string));
   }
+  if (date.toString() === "Invalid Date") {
+    date = new Date(parseInt(date_string));
+    if (date.toString() === "Invalid Date") {
+      return res.json({
+        error: date.toString()
+      })
+    }
 
-  
-  console.log(date);
-
-  if(date.toString() === "Invalid Date"){
-    return res.json({
-      erro: date.toString()
-    })
   }
+  let newDate = date.toUTCString();
+  console.log(newDate)
+  console.log(req.path);
 
-  
-
-  let formattedDate = `${daysOfWeek[date.getUTCDay()]} ,${date.getUTCDate()} ${months[date.getUTCMonth()]} ${date.getUTCFullYear()} ${date.getUTCHours().toString().padStart(2, '0')}:${date.getUTCMinutes().toString().padStart(2, '0')}:${date.getUTCSeconds().toString().padStart(2, '0')}`
-  res.json({
-    unix: date.getTime(),
-    utc: formattedDate
+  console.log({
+    unix: Date.parse(newDate),
+    utc: newDate
   })
+
+
+  res.json({
+    unix: Date.parse(date.toUTCString()),
+    utc: date.toUTCString()
+  })
+
 })
 
 
